@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCK Token - Empowering the Nigerian Economy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        naija: {
+                            50: '#eefbf3',
+                            100: '#d7f5e3',
+                            500: '#008751', /* Official Nigerian Green */
+                            600: '#007043',
+                            700: '#005835',
+                            900: '#00331e',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        },
+                        darkbg: '#0a0f0d',
+                        darkcard: '#121a16'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0a0f0d;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .glow-effect {
+            box-shadow: 0 0 50px -10px rgba(0, 135, 81, 0.35);
+        }
+        .glass-panel {
+            background: rgba(18, 26, 22, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 135, 81, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #008751 0%, #34d399 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-naija-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Custom SVG Brand Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer">
+                    <svg class="w-11 h-11 text-naija-500 hover:scale-105 transition-transform" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="46" fill="#121a16" stroke="url(#naijaGrad)" stroke-width="6"/>
+                        <circle cx="50" cy="50" r="36" fill="#008751" fill-opacity="0.15"/>
+                        <path d="M30 35H70V45H55V75H45V45H30V35Z" fill="#008751"/>
+                        <path d="M62 48L72 58L62 68" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M38 52L28 62L38 72" stroke="#008751" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="naijaGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#008751"/>
+                                <stop offset="0.5" stop-color="#34D399"/>
+                                <stop offset="1" stop-color="#F59E0B"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div>
+                        <span class="text-2xl font-black tracking-tight text-white">TCK <span class="text-naija-500">Token</span></span>
+                        <span class="block text-[10px] text-gray-400 font-medium -mt-1 tracking-widest uppercase">Nigerian Economic Catalyst</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-8 text-sm font-semibold text-gray-300">
+                    <a href="#about" class="hover:text-naija-500 transition-colors">About Mission</a>
+                    <a href="#swap" class="hover:text-naija-500 transition-colors">Buy / Sell TCK</a>
+                    <a href="#tokenomics" class="hover:text-naija-500 transition-colors">Tokenomics</a>
+                    <a href="#roadmap" class="hover:text-naija-500 transition-colors">Roadmap</a>
+                </nav>
+
+                <!-- Action Button -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button onclick="openModal('swap-modal')" class="bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white px-6 py-2.5 rounded-full font-bold shadow-lg transition-all transform hover:scale-105 active:scale-95">
+                        Buy TCK Now
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2 focus:outline-none" aria-label="Toggle Menu">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-b border-naija-500/20 px-4 pt-2 pb-6 space-y-3">
+            <a href="#about" class="block py-2 text-gray-300 font-medium hover:text-naija-500">About Mission</a>
+            <a href="#swap" class="block py-2 text-gray-300 font-medium hover:text-naija-500">Buy / Sell TCK</a>
+            <a href="#tokenomics" class="block py-2 text-gray-300 font-medium hover:text-naija-500">Tokenomics</a>
+            <a href="#roadmap" class="block py-2 text-gray-300 font-medium hover:text-naija-500">Roadmap</a>
+            <button onclick="openModal('swap-modal')" class="w-full bg-naija-500 hover:bg-naija-600 text-white py-3 rounded-xl font-bold mt-2 shadow-lg">
+                Buy TCK Now
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-28 pb-16 md:pt-40 md:pb-28 overflow-hidden">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-naija-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-72 h-72 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                
+                <!-- Left Hero Content -->
+                <div class="lg:col-span-7 text-center lg:text-left">
+                    <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full glass-panel text-naija-500 text-xs sm:text-sm font-semibold mb-6 border border-naija-500/30">
+                        <span class="w-2 h-2 rounded-full bg-naija-500 animate-ping"></span>
+                        <span>Empowering Local Micro-Transactions & Wealth Creation</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-6">
+                        Strengthening Nigeria's Economy With <span class="gradient-text">TCK Token</span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        TCK is built to drive peer-to-peer economic vitality. Every purchase, trade, and transaction supports local growth, incentivizes commerce, and returns value directly to the community.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#swap" class="w-full sm:w-auto bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold px-8 py-4 rounded-xl shadow-xl transition-all text-center">
+                            Start Trading TCK
+                        </a>
+                        <a href="#about" class="w-full sm:w-auto glass-panel hover:bg-naija-900/40 text-gray-200 border border-naija-500/30 font-bold px-8 py-4 rounded-xl transition-all text-center flex items-center justify-center gap-2">
+                            <span>Read Whitepaper</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
+                    </div>
+
+                    <!-- Live Stats Ribbon -->
+                    <div class="grid grid-cols-3 gap-2 sm:gap-4 mt-10 pt-8 border-t border-gray-800">
+                        <div class="bg-darkcard/40 p-3 sm:p-4 rounded-xl border border-gray-800/60">
+                            <p class="text-[10px] sm:text-xs text-gray-400 font-semibold uppercase">Total Supply</p>
+                            <p class="text-lg sm:text-2xl font-black text-white mt-1">100M <span class="text-naija-500 text-xs">TCK</span></p>
+                        </div>
+                        <div class="bg-darkcard/40 p-3 sm:p-4 rounded-xl border border-gray-800/60">
+                            <p class="text-[10px] sm:text-xs text-gray-400 font-semibold uppercase">Community Pool</p>
+                            <p class="text-lg sm:text-2xl font-black text-gold-400 mt-1">45%</p>
+                        </div>
+                        <div class="bg-darkcard/40 p-3 sm:p-4 rounded-xl border border-gray-800/60">
+                            <p class="text-[10px] sm:text-xs text-gray-400 font-semibold uppercase">Transaction Fee</p>
+                            <p class="text-lg sm:text-2xl font-black text-emerald-400 mt-1">1% <span class="text-[10px] text-gray-400">Pool</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Widget / Trading Preview -->
+                <div class="lg:col-span-5" id="swap">
+                    <div class="glass-panel rounded-3xl p-5 sm:p-8 border border-naija-500/30 glow-effect relative">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-right-left text-naija-500"></i> Instant Swap Engine
+                            </h3>
+                            <span class="text-[10px] sm:text-xs bg-naija-500/20 text-naija-500 font-bold px-2.5 py-1 rounded-full border border-naija-500/30">Live Simulation</span>
+                        </div>
+
+                        <!-- Tab Selectors -->
+                        <div class="flex bg-darkbg p-1 rounded-xl mb-6 border border-gray-800">
+                            <button id="tab-buy" onclick="switchSwapTab('buy')" class="flex-1 py-2.5 rounded-lg text-sm font-bold text-white bg-naija-600 transition-all">Buy TCK</button>
+                            <button id="tab-sell" onclick="switchSwapTab('sell')" class="flex-1 py-2.5 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all">Sell TCK</button>
+                        </div>
+
+                        <!-- Swap Input Box 1 -->
+                        <div class="bg-darkbg/80 rounded-2xl p-4 border border-gray-800 mb-3">
+                            <div class="flex justify-between text-xs text-gray-400 mb-2 font-medium">
+                                <span id="label-pay">You Pay</span>
+                                <span>Balance: <span id="pay-balance">500,000</span> <span id="pay-currency">NGN</span></span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2">
+                                <input type="number" id="input-pay" value="10000" oninput="calculateSwap()" class="bg-transparent text-xl sm:text-2xl font-bold text-white focus:outline-none w-full" placeholder="0.0">
+                                <div class="flex items-center space-x-2 bg-darkcard px-3 py-1.5 rounded-xl border border-gray-700 shrink-0">
+                                    <span id="symbol-pay-flag" class="text-lg">🇳🇬</span>
+                                    <span id="symbol-pay" class="font-bold text-sm text-gray-200">NGN</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Swap Icon Divider -->
+                        <div class="flex justify-center -my-2 relative z-10">
+                            <button onclick="toggleSwapDirection()" class="bg-naija-500 hover:bg-naija-600 text-white p-2.5 rounded-full border-4 border-darkbg transition-transform hover:rotate-180" aria-label="Switch Direction">
+                                <i class="fa-solid fa-arrow-down-up-across-line text-xs"></i>
+                            </button>
+                        </div>
+
+                        <!-- Swap Input Box 2 -->
+                        <div class="bg-darkbg/80 rounded-2xl p-4 border border-gray-800 mt-1 mb-6">
+                            <div class="flex justify-between text-xs text-gray-400 mb-2 font-medium">
+                                <span id="label-receive">You Receive (Est.)</span>
+                                <span>Balance: <span id="receive-balance">0.00</span> TCK</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2">
+                                <input type="number" id="input-receive" readonly class="bg-transparent text-xl sm:text-2xl font-bold text-naija-500 focus:outline-none w-full" placeholder="0.0">
+                                <div class="flex items-center space-x-2 bg-darkcard px-3 py-1.5 rounded-xl border border-gray-700 shrink-0">
+                                    <div class="w-5 h-5 rounded-full bg-naija-500 flex items-center justify-center text-[10px] text-black font-bold">T</div>
+                                    <span class="font-bold text-sm text-gray-200">TCK</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Exchange Details -->
+                        <div class="space-y-2 text-xs text-gray-400 mb-6 bg-darkcard/50 p-3 rounded-xl border border-gray-800/80">
+                            <div class="flex justify-between">
+                                <span>Rate</span>
+                                <span class="text-gray-200 font-semibold" id="exchange-rate">1 TCK = ₦50.00 NGN</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Economic Revitalization Pool Fee (1%)</span>
+                                <span class="text-emerald-400 font-semibold" id="fee-amount">₦100.00 NGN</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Submit Button -->
+                        <button onclick="processSwap()" class="w-full bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition-all text-center active:scale-95">
+                            Execute Order
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Core Features Section -->
+    <section id="about" class="py-20 bg-darkcard/50 relative border-t border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-naija-500 tracking-wider uppercase mb-2">Our Core Purpose</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">Designed to Revitalize Local Commerce</p>
+                <p class="text-gray-400 mt-4 text-base leading-relaxed">
+                    TCK Token is a community-first initiative engineered to support micro-merchants, enable job initiatives, and buffer peer-to-peer trade across Nigeria.
+                </p>
+            </div>
+
+            <!-- Merchant & Visual Context Showcase -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="glass-panel p-6 rounded-3xl border border-naija-500/20 overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 sm:h-56 rounded-2xl overflow-hidden mb-6 relative">
+                            <img src="https://images.unsplash.com/photo-1556742049-0a670f4a4591?auto=format&fit=crop&w=800&q=80" alt="Local Merchant Payments" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x400/121a16/008751?text=Merchant+Payments'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-transparent to-transparent"></div>
+                            <span class="absolute bottom-3 left-3 bg-naija-500 text-black text-xs font-bold px-3 py-1 rounded-full">Zero-Delay POS</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Empowering Local Businesses</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Low transaction costs and instant settlement times empower local Nigerian businesses to accept digital payments effortlessly without heavy banking surcharges.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-gold-500/20 overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 sm:h-56 rounded-2xl overflow-hidden mb-6 relative">
+                            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80" alt="Economic Support Fund" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x400/121a16/f59e0b?text=Economic+Growth'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-darkbg via-transparent to-transparent"></div>
+                            <span class="absolute bottom-3 left-3 bg-gold-400 text-black text-xs font-bold px-3 py-1 rounded-full">Community Grants</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">Economic Buyback & Grant Pool</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            A portion of every trade goes straight into an Economic Stimulus Fund used to buy back TCK and fund grants for local entrepreneurs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Pillar Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 rounded-2xl border border-naija-500/20 hover:border-naija-500/50 transition-all">
+                    <div class="w-14 h-14 bg-naija-500/20 rounded-2xl flex items-center justify-center text-naija-500 text-2xl mb-6">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Merchant Empowerment</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Enabling friction-free micro-transactions across Nigerian marketplaces and online businesses.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-gold-500/20 hover:border-gold-500/50 transition-all">
+                    <div class="w-14 h-14 bg-gold-500/20 rounded-2xl flex items-center justify-center text-gold-400 text-2xl mb-6">
+                        <i class="fa-solid fa-chart-line font-bold"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Sustainable Value</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Automatic buyback mechanics directly reflect community adoption and trading volume back into market liquidity.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-emerald-500/20 hover:border-emerald-500/50 transition-all">
+                    <div class="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 text-2xl mb-6">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Grassroots Governance</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Token holders decide community grant allocations and vote on key ecosystem strategies.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section id="tokenomics" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-6">
+                    <h2 class="text-xs font-bold text-naija-500 tracking-wider uppercase mb-2">Token Distribution</h2>
+                    <p class="text-3xl sm:text-4xl font-extrabold text-white mb-6">Transparent & Balanced Tokenomics</p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Our distribution model prioritizes community longevity, liquidity stability, and continuous economic support for Nigerian merchants and holders.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="bg-darkcard p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-4 h-4 rounded-full bg-naija-500 inline-block"></span>
+                                <span class="font-bold text-white text-sm">Community Rewards & Grants</span>
+                            </div>
+                            <span class="font-extrabold text-naija-500">45%</span>
+                        </div>
+                        <div class="bg-darkcard p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-4 h-4 rounded-full bg-emerald-400 inline-block"></span>
+                                <span class="font-bold text-white text-sm">Public Liquidity Pool</span>
+                            </div>
+                            <span class="font-extrabold text-emerald-400">30%</span>
+                        </div>
+                        <div class="bg-darkcard p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-4 h-4 rounded-full bg-gold-400 inline-block"></span>
+                                <span class="font-bold text-white text-sm">Ecosystem Development</span>
+                            </div>
+                            <span class="font-extrabold text-gold-400">15%</span>
+                        </div>
+                        <div class="bg-darkcard p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-4 h-4 rounded-full bg-blue-500 inline-block"></span>
+                                <span class="font-bold text-white text-sm">Founding Team (Locked 3 Yrs)</span>
+                            </div>
+                            <span class="font-extrabold text-blue-500">10%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 flex justify-center">
+                    <div class="glass-panel p-8 rounded-3xl border border-naija-500/20 text-center max-w-md w-full relative">
+                        <div class="w-60 h-60 sm:w-64 sm:h-64 mx-auto rounded-full border-8 border-naija-500/20 relative flex items-center justify-center bg-gradient-to-tr from-darkbg via-darkcard to-naija-900/30 shadow-2xl">
+                            <div class="text-center">
+                                <span class="text-3xl font-black text-white block">100M</span>
+                                <span class="text-xs font-bold text-naija-500 uppercase tracking-widest">Total TCK Supply</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-xs text-gray-400 italic">
+                            * Liquidity locked to build maximum trust and financial safety.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-20 bg-darkcard/30 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-naija-500 tracking-wider uppercase mb-2">Growth Plan</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">Execution Roadmap</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-naija-500 relative">
+                    <span class="text-xs font-bold text-naija-500 uppercase">Phase 1</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-3">Foundation & Launch</h4>
+                    <ul class="text-xs text-gray-400 space-y-2">
+                        <li><i class="fa-solid fa-check text-naija-500 mr-1.5"></i> Web Front-End Deployment</li>
+                        <li><i class="fa-solid fa-check text-naija-500 mr-1.5"></i> Token Smart Contract Deployment</li>
+                        <li><i class="fa-solid fa-check text-naija-500 mr-1.5"></i> Community Presale</li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-gold-500 relative">
+                    <span class="text-xs font-bold text-gold-400 uppercase">Phase 2</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-3">Merchant Onboarding</h4>
+                    <ul class="text-xs text-gray-400 space-y-2">
+                        <li><i class="fa-solid fa-circle text-gold-400 text-[8px] mr-2"></i> POS Merchant App Integration</li>
+                        <li><i class="fa-solid fa-circle text-gold-400 text-[8px] mr-2"></i> P2P Peer Escrow System</li>
+                        <li><i class="fa-solid fa-circle text-gold-400 text-[8px] mr-2"></i> Business Grants Kickoff</li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-500 relative">
+                    <span class="text-xs font-bold text-emerald-400 uppercase">Phase 3</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-3">Ecosystem Expansion</h4>
+                    <ul class="text-xs text-gray-400 space-y-2">
+                        <li><i class="fa-solid fa-circle text-emerald-400 text-[8px] mr-2"></i> Staking & Rewards Pool</li>
+                        <li><i class="fa-solid fa-circle text-emerald-400 text-[8px] mr-2"></i> Exchange Listings (DEX/CEX)</li>
+                        <li><i class="fa-solid fa-circle text-emerald-400 text-[8px] mr-2"></i> Payment Gateway Expansion</li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-blue-500 relative">
+                    <span class="text-xs font-bold text-blue-400 uppercase">Phase 4</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-3">Full Governance</h4>
+                    <ul class="text-xs text-gray-400 space-y-2">
+                        <li><i class="fa-solid fa-circle text-blue-400 text-[8px] mr-2"></i> Launch TCK DAO</li>
+                        <li><i class="fa-solid fa-circle text-blue-400 text-[8px] mr-2"></i> Pan-African Commerce Bridge</li>
+                        <li><i class="fa-solid fa-circle text-blue-400 text-[8px] mr-2"></i> Micro-Lending Protocol</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-darkbg border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-naija-500" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="46" fill="#121a16" stroke="#008751" stroke-width="6"/>
+                        <path d="M30 35H70V45H55V75H45V45H30V35Z" fill="#008751"/>
+                    </svg>
+                    <span class="text-lg font-bold text-white">TCK Token</span>
+                </div>
+                
+                <p class="text-xs text-gray-500 text-center">
+                    &copy; 2026 TCK Token Economy. Designed for financial inclusion and empowerment.
+                </p>
+
+                <div class="flex space-x-4 text-gray-400">
+                    <a href="#" class="hover:text-naija-500 transition-colors" aria-label="Twitter"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                    <a href="#" class="hover:text-naija-500 transition-colors" aria-label="Telegram"><i class="fa-brands fa-telegram text-lg"></i></a>
+                    <a href="#" class="hover:text-naija-500 transition-colors" aria-label="Discord"><i class="fa-brands fa-discord text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal (No alert() used) -->
+    <div id="swap-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl max-w-sm w-full border border-naija-500/30 text-center relative">
+            <button onclick="closeModal('swap-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white" aria-label="Close">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div id="modal-icon-box" class="w-16 h-16 bg-naija-500/20 text-naija-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i id="modal-icon" class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="modal-title" class="text-xl font-bold text-white mb-2">Order Processed!</h3>
+            <p id="modal-desc" class="text-sm text-gray-300 mb-6">
+                Your transaction order has been simulated and submitted to the network.
+            </p>
+            <button onclick="closeModal('swap-modal')" class="w-full bg-naija-500 hover:bg-naija-600 text-white font-bold py-3 rounded-xl transition-all">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let currentMode = 'buy';
+        const rateNGNtoTCK = 50.00; // 1 TCK = 50 NGN
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Tab Switch (Buy/Sell)
+        function switchSwapTab(mode) {
+            currentMode = mode;
+            const buyTab = document.getElementById('tab-buy');
+            const sellTab = document.getElementById('tab-sell');
+            
+            if (mode === 'buy') {
+                buyTab.className = "flex-1 py-2.5 rounded-lg text-sm font-bold text-white bg-naija-600 transition-all";
+                sellTab.className = "flex-1 py-2.5 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all";
+                
+                document.getElementById('label-pay').innerText = "You Pay";
+                document.getElementById('symbol-pay').innerText = "NGN";
+                document.getElementById('symbol-pay-flag').innerText = "🇳🇬";
+                document.getElementById('pay-currency').innerText = "NGN";
+                document.getElementById('pay-balance').innerText = "500,000";
+
+                document.getElementById('label-receive').innerText = "You Receive (Est.)";
+            } else {
+                sellTab.className = "flex-1 py-2.5 rounded-lg text-sm font-bold text-white bg-naija-600 transition-all";
+                buyTab.className = "flex-1 py-2.5 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all";
+                
+                document.getElementById('label-pay').innerText = "You Sell";
+                document.getElementById('symbol-pay').innerText = "TCK";
+                document.getElementById('symbol-pay-flag').innerText = "🪙";
+                document.getElementById('pay-currency').innerText = "TCK";
+                document.getElementById('pay-balance').innerText = "1,000.00";
+
+                document.getElementById('label-receive').innerText = "You Receive (Est. NGN)";
+            }
+            calculateSwap();
+        }
+
+        // Real-time calculation logic
+        function calculateSwap() {
+            const inputVal = parseFloat(document.getElementById('input-pay').value) || 0;
+            const receiveInput = document.getElementById('input-receive');
+            const feeSpan = document.getElementById('fee-amount');
+
+            if (currentMode === 'buy') {
+                const tckAmount = inputVal / rateNGNtoTCK;
+                const feeNGN = inputVal * 0.01;
+                receiveInput.value = tckAmount.toFixed(2);
+                feeSpan.innerText = `₦${feeNGN.toFixed(2)} NGN`;
+            } else {
+                const ngnAmount = inputVal * rateNGNtoTCK;
+                const feeTCK = inputVal * 0.01;
+                receiveInput.value = ngnAmount.toFixed(2);
+                feeSpan.innerText = `${feeTCK.toFixed(2)} TCK`;
+            }
+        }
+
+        function toggleSwapDirection() {
+            switchSwapTab(currentMode === 'buy' ? 'sell' : 'buy');
+        }
+
+        function processSwap() {
+            const inputVal = parseFloat(document.getElementById('input-pay').value);
+            if (!inputVal || inputVal <= 0) {
+                showModal("Invalid Amount", "Please enter a valid amount greater than zero to proceed.", false);
+                return;
+            }
+            const modeText = currentMode === 'buy' ? 'purchase' : 'sale';
+            const curText = currentMode === 'buy' ? 'NGN' : 'TCK';
+            showModal("Order Processed!", `Your request to ${modeText} using ${inputVal.toLocaleString()} ${curText} was successful.`, true);
+        }
+
+        function showModal(title, desc, isSuccess) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            
+            const icon = document.getElementById('modal-icon');
+            const iconBox = document.getElementById('modal-icon-box');
+
+            if (isSuccess) {
+                icon.className = "fa-solid fa-circle-check";
+                iconBox.className = "w-16 h-16 bg-naija-500/20 text-naija-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl";
+            } else {
+                icon.className = "fa-solid fa-triangle-exclamation";
+                iconBox.className = "w-16 h-16 bg-red-500/20 text-red-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl";
+            }
+            openModal('swap-modal');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        window.onload = function() {
+            calculateSwap();
+        };
+    </script>
+</body>
+</html>

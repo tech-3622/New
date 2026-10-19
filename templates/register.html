@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TCK Token - Create Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        naija: {
+                            50: '#eefbf3',
+                            100: '#d7f5e3',
+                            500: '#008751', /* Official Nigerian Green */
+                            600: '#007043',
+                            700: '#005835',
+                            900: '#00331e',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        },
+                        darkbg: '#0a0f0d',
+                        darkcard: '#121a16'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0a0f0d;
+            color: #f3f4f6;
+        }
+        .glass-panel {
+            background: rgba(18, 26, 22, 0.90);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 135, 81, 0.25);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #008751 0%, #34d399 50%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col justify-between selection:bg-naija-500 selection:text-white">
+
+    <!-- Header / Navbar (Clean Header for Mobile & Desktop) -->
+    <header class="w-full border-b border-naija-500/20 bg-darkcard/80 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="/" class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10 text-naija-500" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="46" fill="#121a16" stroke="url(#naijaGrad)" stroke-width="6"/>
+                    <circle cx="50" cy="50" r="36" fill="#008751" fill-opacity="0.15"/>
+                    <path d="M30 35H70V45H55V75H45V45H30V35Z" fill="#008751"/>
+                    <path d="M62 48L72 58L62 68" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M38 52L28 62L38 72" stroke="#008751" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="naijaGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#008751"/>
+                            <stop offset="0.5" stop-color="#34D399"/>
+                            <stop offset="1" stop-color="#F59E0B"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="text-lg sm:text-2xl font-black tracking-tight text-white leading-none">TCK <span class="text-naija-500">Token</span></span>
+                    <span class="text-[9px] sm:text-[10px] text-gray-400 font-medium tracking-widest uppercase mt-0.5">Nigerian Economic Catalyst</span>
+                </div>
+            </a>
+
+            <!-- Back to Home -->
+            <a href="/" class="text-xs sm:text-sm font-bold text-gray-300 hover:text-naija-500 flex items-center space-x-1.5 transition-colors">
+                <i class="fa-solid fa-arrow-left text-xs"></i>
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Registration Container -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 py-8">
+        <div class="w-full max-w-lg glass-panel p-5 sm:p-8 rounded-3xl shadow-2xl border border-naija-500/30 relative my-auto">
+            
+            <!-- Step Progress Indicator -->
+            <div class="mb-6 sm:mb-8">
+                <div class="flex items-center justify-between text-xs font-bold text-gray-300 mb-2">
+                    <span id="reg-step-label" class="text-naija-500">Section 1 of 3: Account Setup</span>
+                    <span id="reg-step-percent" class="text-gold-400">33%</span>
+                </div>
+                <div class="w-full bg-darkbg rounded-full h-2.5 border border-gray-800 overflow-hidden p-0.5">
+                    <div id="reg-progress-bar" class="bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-1/3"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 1: Personal & Account Type Setup -->
+            <form id="reg-form-step-1" onsubmit="event.preventDefault(); goToStep2();" class="space-y-4">
+                <div class="text-center mb-6">
+                    <h1 class="text-2xl sm:text-3xl font-black text-white">Create Account</h1>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-1">Join the decentralized TCK financial network</p>
+                </div>
+
+                <!-- Account Type Selector -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Select Account Type</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" id="type-personal" onclick="selectAccountType('personal')" class="p-3 rounded-2xl border-2 border-naija-500 bg-naija-500/20 text-white font-bold text-xs sm:text-sm flex flex-col items-center justify-center space-y-1 transition-all">
+                            <i class="fa-solid fa-user text-lg text-naija-500"></i>
+                            <span>Personal / Trader</span>
+                        </button>
+                        <button type="button" id="type-merchant" onclick="selectAccountType('merchant')" class="p-3 rounded-2xl border-2 border-gray-800 bg-darkbg text-gray-400 font-bold text-xs sm:text-sm flex flex-col items-center justify-center space-y-1 hover:border-gray-700 transition-all">
+                            <i class="fa-solid fa-store text-lg text-gray-400"></i>
+                            <span>Merchant POS</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Full Name Input -->
+                <div>
+                    <label for="reg-fullname" class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Full Name</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                        <input type="text" id="reg-fullname" required placeholder="e.g. Chukwuma Adebayo" class="w-full bg-darkbg text-white pl-11 pr-4 py-3.5 rounded-xl border border-gray-800 focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-sm transition-all">
+                    </div>
+                </div>
+
+                <!-- Email Input -->
+                <div>
+                    <label for="reg-email" class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                        <input type="email" id="reg-email" required placeholder="name@domain.com" class="w-full bg-darkbg text-white pl-11 pr-4 py-3.5 rounded-xl border border-gray-800 focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-sm transition-all">
+                    </div>
+                </div>
+
+                <!-- Password & Referral -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="reg-password" class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                            <input type="password" id="reg-password" required minlength="8" placeholder="••••••••" class="w-full bg-darkbg text-white pl-11 pr-4 py-3.5 rounded-xl border border-gray-800 focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-sm transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="reg-ref" class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Referral (Opt.)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-ticket absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                            <input type="text" id="reg-ref" placeholder="TCK-9920" class="w-full bg-darkbg text-white pl-11 pr-4 py-3.5 rounded-xl border border-gray-800 focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-sm transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition-all text-sm mt-4 active:scale-98 flex items-center justify-center space-x-2">
+                    <span>Continue to Verification</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </form>
+
+            <!-- SECTION 2: Email Verification (OTP Code) -->
+            <div id="reg-step-2" class="space-y-5 hidden">
+                <div class="text-center mb-4">
+                    <div class="w-14 h-14 bg-naija-500/20 text-naija-500 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl border border-naija-500/30">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-white">Email Verification</h2>
+                    <p class="text-xs text-gray-400 mt-1 max-w-xs mx-auto leading-relaxed">
+                        We have dispatched a 6-digit verification code to <span id="confirm-email-display" class="text-naija-500 font-bold break-all">user@email.com</span>
+                    </p>
+                </div>
+
+                <!-- 6-Digit OTP Inputs -->
+                <div>
+                    <label class="block text-center text-xs font-bold text-gray-300 uppercase tracking-wider mb-3">Enter 6-Digit Code</label>
+                    <div class="flex justify-center gap-1.5 sm:gap-2 my-2">
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 0)" onfocus="this.select()">
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 1)" onfocus="this.select()">
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 2)" onfocus="this.select()">
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 3)" onfocus="this.select()">
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 4)" onfocus="this.select()">
+                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 5)" onfocus="this.select()">
+                    </div>
+                </div>
+
+                <div class="text-center text-xs text-gray-400">
+                    <span>Didn't receive the email? </span>
+                    <button type="button" onclick="resendOTP()" class="text-naija-500 font-bold hover:underline">Resend Code</button>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="goToStep1()" class="w-1/3 bg-darkbg hover:bg-gray-800 text-gray-300 font-bold py-3.5 rounded-xl border border-gray-800 text-xs transition-all">
+                        Back
+                    </button>
+                    <button type="button" onclick="verifyOTPAndFinish()" class="w-2/3 bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-xs active:scale-98">
+                        Verify & Complete
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Confirmation & Welcome -->
+            <div id="reg-step-3" class="text-center py-4 space-y-5 hidden">
+                <div class="w-20 h-20 bg-naija-500/20 text-naija-500 rounded-full flex items-center justify-center mx-auto text-3xl border-2 border-naija-500/50 animate-bounce">
+                    <i class="fa-solid fa-check text-emerald-400"></i>
+                </div>
+                
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Welcome to TCK!</h2>
+                    <p class="text-xs sm:text-sm text-gray-300 mt-2 max-w-xs mx-auto leading-relaxed">
+                        Your account has been verified. You have been credited with a <span class="text-gold-400 font-bold">100 TCK Welcome Bonus</span>!
+                    </p>
+                </div>
+
+                <div class="bg-darkbg p-4 rounded-2xl border border-gray-800 text-left space-y-2.5 text-xs">
+                    <div class="flex justify-between text-gray-400">
+                        <span>Account Holder:</span>
+                        <span id="res-acct-name" class="text-white font-bold">Chukwuma Adebayo</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400">
+                        <span>Account Type:</span>
+                        <span id="res-acct-type" class="text-naija-500 font-bold">Personal Trader</span>
+                    </div>
+                    <div class="flex justify-between text-gray-400">
+                        <span>Generated Wallet:</span>
+                        <span class="text-gold-400 font-mono font-bold">0x71C...39A2</span>
+                    </div>
+                </div>
+
+                <a href="/" class="block w-full bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition-all text-sm active:scale-98">
+                    Proceed to Dashboard / Homepage
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Generic Alert Modal -->
+    <div id="alert-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+        <div class="glass-panel p-6 rounded-3xl max-w-xs w-full border border-naija-500/30 text-center relative">
+            <div id="modal-icon-box" class="w-12 h-12 bg-naija-500/20 text-naija-500 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                <i id="modal-icon" class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="modal-title" class="text-lg font-bold text-white mb-1">Notice</h3>
+            <p id="modal-desc" class="text-xs text-gray-300 mb-5">Message text goes here.</p>
+            <button onclick="closeModal()" class="w-full bg-naija-500 hover:bg-naija-600 text-white font-bold py-2.5 rounded-xl text-xs transition-all">
+                Dismiss
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 text-center border-t border-gray-800 text-xs text-gray-500">
+        &copy; 2026 TCK Token Economy. All rights reserved.
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        let selectedAccountType = 'personal';
+
+        function selectAccountType(type) {
+            selectedAccountType = type;
+            const btnPersonal = document.getElementById('type-personal');
+            const btnMerchant = document.getElementById('type-merchant');
+
+            if (type === 'personal') {
+                btnPersonal.className = "p-3 rounded-2xl border-2 border-naija-500 bg-naija-500/20 text-white font-bold text-xs sm:text-sm flex flex-col items-center justify-center space-y-1 transition-all";
+                btnMerchant.className = "p-3 rounded-2xl border-2 border-gray-800 bg-darkbg text-gray-400 font-bold text-xs sm:text-sm flex flex-col items-center justify-center space-y-1 hover:border-gray-700 transition-all";
+            } else {
+                btnMerchant.className = "p-3 rounded-2xl border-2 border-naija-500 bg-naija-500/20 text-white font-bold text-xs sm:text-sm flex flex-col items-center justify-center space-y-1 transition-all";
+                btnPersonal.className = "p-3 rounded-2xl border-2 border-gray-800 bg-darkbg text-gray-400 font-bold text-xs sm:text-sm flex flex-col items-center justify-center space-y-1 hover:border-gray-700 transition-all";
+            }
+        }
+
+        function goToStep1() {
+            document.getElementById('reg-form-step-1').classList.remove('hidden');
+            document.getElementById('reg-step-2').classList.add('hidden');
+            document.getElementById('reg-step-3').classList.add('hidden');
+
+            document.getElementById('reg-step-label').innerText = "Section 1 of 3: Account Setup";
+            document.getElementById('reg-step-percent').innerText = "33%";
+            document.getElementById('reg-progress-bar').className = "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-1/3";
+        }
+
+        function goToStep2() {
+            const name = document.getElementById('reg-fullname').value;
+            const email = document.getElementById('reg-email').value;
+
+            if (!name || !email) {
+                showAlert("Missing Fields", "Please enter your Full Name and Email Address.");
+                return;
+            }
+
+            document.getElementById('confirm-email-display').innerText = email;
+            document.getElementById('reg-form-step-1').classList.add('hidden');
+            document.getElementById('reg-step-2').classList.remove('hidden');
+            document.getElementById('reg-step-3').classList.add('hidden');
+
+            document.getElementById('reg-step-label').innerText = "Section 2 of 3: Email Verification";
+            document.getElementById('reg-step-percent').innerText = "66%";
+            document.getElementById('reg-progress-bar').className = "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-2/3";
+
+            // Focus on first OTP input
+            const firstOtp = document.querySelector('.otp-input');
+            if (firstOtp) setTimeout(() => firstOtp.focus(), 100);
+        }
+
+        function moveOtpFocus(elem, index) {
+            const otps = document.querySelectorAll('.otp-input');
+            if (elem.value.length === 1 && index < 5) {
+                otps[index + 1].focus();
+            }
+        }
+
+        function resendOTP() {
+            showAlert("Code Resent", "A new 6-digit confirmation code has been dispatched to your email address.");
+        }
+
+        function verifyOTPAndFinish() {
+            const name = document.getElementById('reg-fullname').value || "User";
+            document.getElementById('res-acct-name').innerText = name;
+            document.getElementById('res-acct-type').innerText = selectedAccountType === 'personal' ? 'Personal Trader' : 'Merchant POS';
+
+            document.getElementById('reg-form-step-1').classList.add('hidden');
+            document.getElementById('reg-step-2').classList.add('hidden');
+            document.getElementById('reg-step-3').classList.remove('hidden');
+
+            document.getElementById('reg-step-label').innerText = "Section 3 of 3: Registration Complete";
+            document.getElementById('reg-step-percent').innerText = "100%";
+            document.getElementById('reg-progress-bar').className = "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-full";
+        }
+
+        function showAlert(title, desc) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('alert-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('alert-modal').classList.add('hidden');
+        }
+    </script>
+    <script src="/static/register.js"></script>
+    <script src="/static/register2.js"></script>
+</body>
+</html>
+

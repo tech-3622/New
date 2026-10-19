@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCK Token - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                colors: { naija: { 500: '#008751', 600: '#007043' }, darkbg: '#0a0f0d', darkcard: '#121a16' },
+                fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+            } }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0f0d; color: #f3f4f6; }
+        .box { background: #121a16; border: 1px solid rgba(0, 135, 81, 0.25); border-radius: 1rem; }
+        .tab-on { background: rgba(0, 135, 81, 0.25); color: #34d399; border-color: rgba(0, 135, 81, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="border-b border-naija-500/20 bg-darkcard/80 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="font-black text-lg sm:text-xl text-white">TCK <span class="text-naija-500">Admin</span></div>
+            <div class="flex items-center gap-2">
+                <a href="/dashboard" class="text-xs font-bold px-3 py-2 rounded-xl border border-gray-800 text-gray-300 hover:bg-gray-800">My Dashboard</a>
+                <button onclick="logout()" class="text-xs font-bold px-3 py-2 rounded-xl bg-red-500/15 text-red-400 border border-red-500/30">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-5">
+
+        <div class="flex gap-2 mb-5">
+            <button id="btn-overview" onclick="showTab('overview')" class="tab-on flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl border border-gray-800 text-gray-300">
+                <i class="fa-solid fa-chart-pie mr-2"></i>Overview
+            </button>
+            <button id="btn-users" onclick="showTab('users')" class="flex-1 sm:flex-none text-sm font-bold px-5 py-2.5 rounded-xl border border-gray-800 text-gray-300">
+                <i class="fa-solid fa-users mr-2"></i>Users
+            </button>
+        </div>
+
+        <section id="tab-overview">
+            <div id="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+            <h2 class="text-xs font-bold text-naija-500 uppercase tracking-wider mt-7 mb-3">Newest Users</h2>
+            <div id="recent" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </section>
+
+        <section id="tab-users" class="hidden">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                    <input id="search" oninput="renderUsers()" placeholder="Search by name, username or email" class="w-full bg-darkcard text-white pl-11 pr-4 py-3 rounded-xl border border-gray-800 focus:border-naija-500 focus:outline-none text-sm">
+                </div>
+                <div id="user-count" class="text-xs text-gray-400 shrink-0"></div>
+            </div>
+            <div id="user-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </section>
+
+    </main>
+
+    <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto" onclick="if(event.target===this)closeModal()">
+        <div class="box max-w-2xl mx-auto p-5 sm:p-6 relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-darkbg border border-gray-800 text-gray-300 hover:bg-gray-800" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+        let allUsers = [];
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function naira(v) {
+            return '₦' + Number(v || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function tck(v) {
+            return Number(v || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TCK';
+        }
+
+        async function api(url) {
+            const r = await fetch(url, { credentials: 'same-origin' });
+            if (r.status === 401) { location.href = '/login'; return null; }
+            if (r.status === 403) { location.href = '/dashboard'; return null; }
+            return r.json().catch(() => null);
+        }
+
+        async function logout() {
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+            location.href = '/login';
+        }
+
+        function showTab(name) {
+            document.getElementById('tab-overview').classList.toggle('hidden', name !== 'overview');
+            document.getElementById('tab-users').classList.toggle('hidden', name !== 'users');
+            document.getElementById('btn-overview').classList.toggle('tab-on', name === 'overview');
+            document.getElementById('btn-users').classList.toggle('tab-on', name === 'users');
+        }
+
+        function statBox(icon, label, value) {
+            return `<div class="box p-4">
+                <div class="text-naija-500 text-lg mb-2"><i class="fa-solid ${icon}"></i></div>
+                <div class="text-xl font-extrabold text-white break-words">${esc(value)}</div>
+                <div class="text-[11px] text-gray-400 uppercase tracking-wider mt-1">${esc(label)}</div>
+            </div>`;
+        }
+
+        function userBox(u) {
+            const name = u.full_name || u.username || '?';
+            const tag = u.is_admin ? 'Admin' : (u.account_type || 'user');
+            return `<button onclick="openUser(${Number(u.id)})" class="box p-4 text-left w-full hover:border-naija-500 transition-all">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-full bg-naija-500/20 text-naija-500 flex items-center justify-center font-extrabold shrink-0">${esc(name.charAt(0).toUpperCase())}</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-bold text-white truncate">${esc(name)}</div>
+                        <div class="text-xs text-gray-400 truncate">@${esc(u.username)}</div>
+                    </div>
+                    <span class="text-[10px] uppercase font-bold px-2 py-1 rounded-lg bg-naija-500/15 text-naija-500">${esc(tag)}</span>
+                </div>
+                <div class="text-xs text-gray-400 truncate mt-3">${esc(u.email)}</div>
+                <div class="flex justify-between mt-3 text-xs">
+                    <span class="text-gray-300">${esc(naira(u.ngn_balance))}</span>
+                    <span class="text-amber-400 font-semibold">${esc(tck(u.tck_balance))}</span>
+                </div>
+            </button>`;
+        }
+
+        function renderUsers() {
+            const q = document.getElementById('search').value.trim().toLowerCase();
+            const list = allUsers.filter(u => !q || [u.username, u.full_name, u.email].join(' ').toLowerCase().includes(q));
+            document.getElementById('user-count').textContent = list.length + (list.length === 1 ? ' user' : ' users');
+            document.getElementById('user-grid').innerHTML = list.length
+                ? list.map(userBox).join('')
+                : '<div class="box p-6 text-center text-gray-400 text-sm col-span-full">No users found.</div>';
+        }
+
+        async function loadOverview() {
+            const d = await api('/api/admin/overview');
+            if (!d || !d.ok) return;
+            const s = d.stats;
+            document.getElementById('stats').innerHTML =
+                statBox('fa-users', 'Total users', s.users) +
+                statBox('fa-user-plus', 'New today', s.new_today) +
+                statBox('fa-store', 'Merchants', s.merchants) +
+                statBox('fa-shield-halved', 'Admins', s.admins) +
+                statBox('fa-naira-sign', 'Total NGN held', naira(s.total_ngn)) +
+                statBox('fa-coins', 'Total TCK held', tck(s.total_tck)) +
+                statBox('fa-lock', 'TCK staked', tck(s.staked_total)) +
+                statBox('fa-list', 'Activity records', s.activity_count);
+        }
+
+        async function loadUsers() {
+            const d = await api('/api/admin/users');
+            if (!d || !d.ok) return;
+            allUsers = d.users;
+            document.getElementById('recent').innerHTML = allUsers.slice(0, 6).map(userBox).join('');
+            renderUsers();
+        }
+
+        function field(label, value) {
+            return `<div class="bg-darkbg border border-gray-800 rounded-xl p-3">
+                <div class="text-[10px] uppercase tracking-wider text-gray-500 mb-1">${esc(label)}</div>
+                <div class="text-sm text-white break-words">${esc(value || '-')}</div>
+            </div>`;
+        }
+
+        function section(title, body) {
+            return `<div class="mb-5"><h3 class="text-xs font-bold text-naija-500 uppercase tracking-wider mb-2">${esc(title)}</h3>${body}</div>`;
+        }
+
+        function delta(a) {
+            const parts = [];
+            const t = Number(a.tck_delta), n = Number(a.ngn_delta);
+            if (t) parts.push((t > 0 ? '+' : '') + t.toFixed(2) + ' TCK');
+            if (n) parts.push((n > 0 ? '+' : '') + '₦' + n.toFixed(2));
+            return parts.join('   ');
+        }
+
+        async function openUser(id) {
+            const body = document.getElementById('modal-body');
+            body.innerHTML = '<div class="text-center text-gray-400 text-sm py-10">Loading...</div>';
+            document.getElementById('modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            const d = await api('/api/admin/users/' + id);
+            if (!d || !d.ok) {
+                body.innerHTML = '<div class="text-center text-red-400 text-sm py-10">Could not load this user.</div>';
+                return;
+            }
+
+            const u = d.user;
+            const name = u.full_name || u.username;
+            const verified = u.email_verified === undefined ? '-' : (u.email_verified ? 'Yes' : 'No');
+
+            const head = `<div class="flex items-center gap-3 mb-5 pr-10">
+                <div class="w-14 h-14 rounded-full bg-naija-500/20 text-naija-500 flex items-center justify-center text-xl font-extrabold shrink-0">${esc(name.charAt(0).toUpperCase())}</div>
+                <div class="min-w-0">
+                    <div class="text-lg font-black text-white truncate">${esc(name)}</div>
+                    <div class="text-xs text-gray-400 truncate">@${esc(u.username)}${u.is_admin ? ' · Admin' : ''}</div>
+                </div>
+            </div>`;
+
+            const balances = section('Balances', `<div class="grid grid-cols-2 gap-2">
+                <div class="bg-darkbg border border-gray-800 rounded-xl p-4">
+                    <div class="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Naira</div>
+                    <div class="text-base font-extrabold text-white break-words">${esc(naira(u.ngn_balance))}</div>
+                </div>
+                <div class="bg-darkbg border border-gray-800 rounded-xl p-4">
+                    <div class="text-[10px] uppercase tracking-wider text-gray-500 mb-1">TCK</div>
+                    <div class="text-base font-extrabold text-amber-400 break-words">${esc(tck(u.tck_balance))}</div>
+                </div>
+            </div>`);
+
+            const account = section('Account', `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${field('Email', u.email)}
+                ${field('Phone', u.phone)}
+                ${field('State', u.state)}
+                ${field('Address', u.address)}
+                ${field('Account type', u.account_type)}
+                ${field('Email verified', verified)}
+                ${field('Joined', (u.created_at || '').slice(0, 10))}
+                ${field('Wallet address', u.wallet_address)}
+            </div>`);
+
+            const bank = section('Bank Details', `<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                ${field('Bank', u.bank_name)}
+                ${field('Account number', u.bank_account_number)}
+                ${field('Account name', u.bank_account_name)}
+            </div>`);
+
+            const stakeHtml = d.stakes.length
+                ? `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">` + d.stakes.map(s => `
+                    <div class="bg-darkbg border border-gray-800 rounded-xl p-3">
+                        <div class="text-sm font-bold text-white">${esc(tck(s.amount))}</div>
+                        <div class="text-xs text-gray-400 mt-1">${esc(s.vault_days)}-day vault · ${esc(s.apy)}% APY</div>
+                        <div class="text-xs text-gray-500 mt-1">${esc(s.status)} · unlocks ${esc(new Date(s.unlock_at * 1000).toLocaleDateString())}</div>
+                    </div>`).join('') + `</div>`
+                : '<div class="text-xs text-gray-500">No stakes yet.</div>';
+            const stakes = section('Stakes', stakeHtml);
+
+            const actHtml = d.activity.length
+                ? `<div class="space-y-2">` + d.activity.map(a => `
+                    <div class="bg-darkbg border border-gray-800 rounded-xl p-3">
+                        <div class="flex justify-between gap-3">
+                            <div class="text-sm font-bold text-white">${esc(a.title)}</div>
+                            <div class="text-[11px] text-gray-500 shrink-0">${esc((a.created_at || '').slice(0, 16))}</div>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">${esc(a.subtitle)}</div>
+                        <div class="text-xs text-amber-400 mt-1">${esc(delta(a))}</div>
+                    </div>`).join('') + `</div>`
+                : '<div class="text-xs text-gray-500">No activity yet.</div>';
+            const activity = section('Recent Activity', actHtml);
+
+            body.innerHTML = head + balances + account + bank + stakes + activity;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        showTab('overview');
+        loadUsers();
+        loadOverview();
+    </script>
+<script src="/static/admin_bank.js"></script>
+</body>
+</html>
