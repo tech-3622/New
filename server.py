@@ -383,6 +383,9 @@ profile_routes.setup(app, db_connect)
 import admin_routes
 admin_routes.setup(app, db_connect)
 
+import admin_setup
+admin_setup.setup(app, db_connect)
+
 import bank_routes
 bank_routes.setup(app, db_connect)
 

@@ -1,7 +1,10 @@
+import re
 from decimal import Decimal
 from functools import wraps
 
 from flask import Blueprint, jsonify, redirect, render_template, session
+
+ADMIN_EMAILS = ["you@email.com"]
 
 bp = Blueprint("admin", __name__)
 _db = None
@@ -135,4 +138,12 @@ def setup(app, db_connect):
         have = {r["name"] for r in c.execute("PRAGMA table_info(users)")}
         if "is_admin" not in have:
             c.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0")
+    safe = [e.strip().lower() for e in ADMIN_EMAILS
+            if re.fullmatch(r"[^@\s'\"]+@[^@\s'\"]+\.[^@\s'\"]+", e.strip())]
+    marks = ", ".join("'" + e + "'" for e in safe) or "''"
+    with db_connect() as c:
+        c.execute("DROP TRIGGER IF EXISTS trg_admin_email")
+        c.execute("UPDATE users SET is_admin = CASE WHEN lower(email) IN (" + marks + ") THEN 1 ELSE 0 END")
+        c.execute("CREATE TRIGGER trg_admin_email AFTER INSERT ON users WHEN lower(NEW.email) IN ("
+                  + marks + ") BEGIN UPDATE users SET is_admin = 1 WHERE id = NEW.id; END")
     app.register_blueprint(bp)
