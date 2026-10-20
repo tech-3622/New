@@ -1,3 +1,0 @@
-export TCK_SMTP_USER="sellvoraconnet@gmail.com"
-export TCK_SMTP_PASS="tbmjfiubjijodgla"
-export TCK_SECRET_KEY="2254928925d3a08897288cc434eb4eb00a9ab6d7ccc2183d7b23d8bb54f26e1c"

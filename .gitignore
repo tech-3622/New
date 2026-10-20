@@ -5,3 +5,4 @@ __pycache__/
 *.bak*
 uploads/
 .env
+.tck_env
