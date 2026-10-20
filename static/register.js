@@ -14,45 +14,17 @@ async function api(path, body) {
   }
 }
 
-let resendTimer = null;
-function startResendCooldown(sec) {
-  const btn = document.querySelector('#reg-step-2 button[onclick="resendOTP()"]');
-  if (!btn) return;
-  clearInterval(resendTimer);
-  let left = sec;
-  btn.disabled = true;
-  btn.textContent = `Resend in ${left}s`;
-  resendTimer = setInterval(() => {
-    left--;
-    if (left <= 0) {
-      clearInterval(resendTimer);
-      btn.disabled = false;
-      btn.textContent = "Resend Code";
-    } else {
-      btn.textContent = `Resend in ${left}s`;
-    }
-  }, 1000);
+function hideProgress() {
+  const label = document.getElementById('reg-step-label');
+  const bar = document.getElementById('reg-progress-bar');
+  if (label && label.parentElement) label.parentElement.classList.add('hidden');
+  if (bar && bar.parentElement) bar.parentElement.classList.add('hidden');
 }
 
-function showStep2UI(email) {
-  document.getElementById('confirm-email-display').innerText = email;
-  document.getElementById('reg-form-step-1').classList.add('hidden');
-  document.getElementById('reg-step-2').classList.remove('hidden');
-  document.getElementById('reg-step-3').classList.add('hidden');
-  document.getElementById('reg-step-label').innerText = "Section 2 of 3: Email Verification";
-  document.getElementById('reg-step-percent').innerText = "66%";
-  document.getElementById('reg-progress-bar').className =
-    "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-2/3";
-  document.querySelectorAll('.otp-input').forEach(i => i.value = '');
-  const first = document.querySelector('.otp-input');
-  if (first) setTimeout(() => first.focus(), 100);
-}
-
-async function goToStep2() {
+async function createAccount() {
   const name = document.getElementById('reg-fullname').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-password').value;
-  const referral = document.getElementById('reg-ref').value.trim();
 
   if (!name || !email || !password) {
     showAlert("Missing Fields", "Please fill in your name, email and password.");
@@ -64,67 +36,45 @@ async function goToStep2() {
   }
 
   const btn = document.querySelector('#reg-form-step-1 button[type="submit"]');
+  const original = btn.innerHTML;
   btn.disabled = true;
-  const res = await api('/api/auth/register/start', {
-    full_name: name, email, password,
-    account_type: selectedAccountType, referral,
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i><span>Creating account...</span>';
+
+  const res = await api('/api/auth/signup', {
+    full_name: name, email, password, account_type: selectedAccountType,
   });
+
   btn.disabled = false;
+  btn.innerHTML = original;
 
   if (!res.ok) {
-    showAlert("Could Not Send Code", res.data.error || "Something went wrong.");
-    return;
-  }
-  showStep2UI(email);
-  startResendCooldown(res.data.resend_in || 60);
-}
-
-async function resendOTP() {
-  const email = document.getElementById('reg-email').value.trim();
-  const res = await api('/api/auth/register/resend', { email });
-  if (!res.ok) {
-    showAlert("Resend Failed", res.data.error || "Could not resend the code.");
-    return;
-  }
-  startResendCooldown(res.data.resend_in || 60);
-  showAlert("Code Resent", "A new 6-digit code was sent. The old one no longer works.");
-}
-
-async function verifyOTPAndFinish() {
-  const code = [...document.querySelectorAll('.otp-input')].map(i => i.value).join('');
-  const email = document.getElementById('reg-email').value.trim();
-  if (code.length !== 6) {
-    showAlert("Incomplete Code", "Enter all 6 digits.");
-    return;
-  }
-  const res = await api('/api/auth/register/verify', { email, code });
-  if (!res.ok) {
-    showAlert("Verification Failed", res.data.error || "Could not verify the code.");
+    showAlert("Could Not Create Account", res.data.error || "Something went wrong.");
     return;
   }
 
-  document.getElementById('res-acct-name').innerText =
-    document.getElementById('reg-fullname').value.trim() || "User";
+  const step3 = document.getElementById('reg-step-3');
+  document.getElementById('res-acct-name').innerText = name;
   document.getElementById('res-acct-type').innerText =
     selectedAccountType === 'personal' ? 'Personal Trader' : 'Merchant POS';
-
   document.getElementById('reg-form-step-1').classList.add('hidden');
-  document.getElementById('reg-step-2').classList.add('hidden');
-  document.getElementById('reg-step-3').classList.remove('hidden');
-  document.getElementById('reg-step-label').innerText = "Section 3 of 3: Registration Complete";
-  document.getElementById('reg-step-percent').innerText = "100%";
-  document.getElementById('reg-progress-bar').className =
-    "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-full";
+  step3.classList.remove('hidden');
+
+  const p = step3.querySelector('p');
+  if (p) p.innerText = 'Your account is ready and your wallet has been created.';
+  const a = step3.querySelector('a');
+  if (a) { a.href = '/dashboard'; a.innerText = 'Go to Dashboard'; }
+
+  try {
+    const r = await fetch('/api/dash/me', { credentials: 'same-origin' });
+    const d = await r.json();
+    if (d.ok) {
+      const el = step3.querySelector('.font-mono');
+      if (el) {
+        el.innerText = d.user.wallet_address;
+        el.classList.add('break-all', 'text-[10px]');
+      }
+    }
+  } catch (e) {}
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const boxes = document.querySelectorAll('.otp-input');
-  if (boxes[0]) {
-    boxes[0].addEventListener('paste', e => {
-      const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
-      if (!digits) return;
-      e.preventDefault();
-      boxes.forEach((b, i) => b.value = digits[i] || '');
-    });
-  }
-});
+document.addEventListener('DOMContentLoaded', hideProgress);

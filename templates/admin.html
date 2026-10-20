@@ -200,7 +200,6 @@
 
             const u = d.user;
             const name = u.full_name || u.username;
-            const verified = u.email_verified === undefined ? '-' : (u.email_verified ? 'Yes' : 'No');
 
             const head = `<div class="flex items-center gap-3 mb-5 pr-10">
                 <div class="w-14 h-14 rounded-full bg-naija-500/20 text-naija-500 flex items-center justify-center text-xl font-extrabold shrink-0">${esc(name.charAt(0).toUpperCase())}</div>

@@ -105,7 +105,7 @@
             </div>
 
             <!-- SECTION 1: Personal & Account Type Setup -->
-            <form id="reg-form-step-1" onsubmit="event.preventDefault(); goToStep2();" class="space-y-4">
+            <form id="reg-form-step-1" onsubmit="event.preventDefault(); createAccount();" class="space-y-4">
                 <div class="text-center mb-6">
                     <h1 class="text-2xl sm:text-3xl font-black text-white">Create Account</h1>
                     <p class="text-xs sm:text-sm text-gray-400 mt-1">Join the decentralized TCK financial network</p>
@@ -163,52 +163,11 @@
                 </div>
 
                 <button type="submit" class="w-full bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold py-4 rounded-xl shadow-lg transition-all text-sm mt-4 active:scale-98 flex items-center justify-center space-x-2">
-                    <span>Continue to Verification</span>
+                    <span>Create Account</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
             </form>
 
-            <!-- SECTION 2: Email Verification (OTP Code) -->
-            <div id="reg-step-2" class="space-y-5 hidden">
-                <div class="text-center mb-4">
-                    <div class="w-14 h-14 bg-naija-500/20 text-naija-500 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl border border-naija-500/30">
-                        <i class="fa-solid fa-envelope-circle-check"></i>
-                    </div>
-                    <h2 class="text-2xl font-black text-white">Email Verification</h2>
-                    <p class="text-xs text-gray-400 mt-1 max-w-xs mx-auto leading-relaxed">
-                        We have dispatched a 6-digit verification code to <span id="confirm-email-display" class="text-naija-500 font-bold break-all">user@email.com</span>
-                    </p>
-                </div>
-
-                <!-- 6-Digit OTP Inputs -->
-                <div>
-                    <label class="block text-center text-xs font-bold text-gray-300 uppercase tracking-wider mb-3">Enter 6-Digit Code</label>
-                    <div class="flex justify-center gap-1.5 sm:gap-2 my-2">
-                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 0)" onfocus="this.select()">
-                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 1)" onfocus="this.select()">
-                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 2)" onfocus="this.select()">
-                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 3)" onfocus="this.select()">
-                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 4)" onfocus="this.select()">
-                        <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-black bg-darkbg border border-gray-800 rounded-xl focus:border-naija-500 focus:ring-1 focus:ring-naija-500 focus:outline-none text-white transition-all" onkeyup="moveOtpFocus(this, 5)" onfocus="this.select()">
-                    </div>
-                </div>
-
-                <div class="text-center text-xs text-gray-400">
-                    <span>Didn't receive the email? </span>
-                    <button type="button" onclick="resendOTP()" class="text-naija-500 font-bold hover:underline">Resend Code</button>
-                </div>
-
-                <div class="flex gap-3 pt-2">
-                    <button type="button" onclick="goToStep1()" class="w-1/3 bg-darkbg hover:bg-gray-800 text-gray-300 font-bold py-3.5 rounded-xl border border-gray-800 text-xs transition-all">
-                        Back
-                    </button>
-                    <button type="button" onclick="verifyOTPAndFinish()" class="w-2/3 bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition-all text-xs active:scale-98">
-                        Verify & Complete
-                    </button>
-                </div>
-            </div>
-
-            <!-- SECTION 3: Confirmation & Welcome -->
             <div id="reg-step-3" class="text-center py-4 space-y-5 hidden">
                 <div class="w-20 h-20 bg-naija-500/20 text-naija-500 rounded-full flex items-center justify-center mx-auto text-3xl border-2 border-naija-500/50 animate-bounce">
                     <i class="fa-solid fa-check text-emerald-400"></i>
@@ -281,63 +240,10 @@
             }
         }
 
-        function goToStep1() {
-            document.getElementById('reg-form-step-1').classList.remove('hidden');
-            document.getElementById('reg-step-2').classList.add('hidden');
-            document.getElementById('reg-step-3').classList.add('hidden');
 
-            document.getElementById('reg-step-label').innerText = "Section 1 of 3: Account Setup";
-            document.getElementById('reg-step-percent').innerText = "33%";
-            document.getElementById('reg-progress-bar').className = "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-1/3";
-        }
 
-        function goToStep2() {
-            const name = document.getElementById('reg-fullname').value;
-            const email = document.getElementById('reg-email').value;
 
-            if (!name || !email) {
-                showAlert("Missing Fields", "Please enter your Full Name and Email Address.");
-                return;
-            }
 
-            document.getElementById('confirm-email-display').innerText = email;
-            document.getElementById('reg-form-step-1').classList.add('hidden');
-            document.getElementById('reg-step-2').classList.remove('hidden');
-            document.getElementById('reg-step-3').classList.add('hidden');
-
-            document.getElementById('reg-step-label').innerText = "Section 2 of 3: Email Verification";
-            document.getElementById('reg-step-percent').innerText = "66%";
-            document.getElementById('reg-progress-bar').className = "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-2/3";
-
-            // Focus on first OTP input
-            const firstOtp = document.querySelector('.otp-input');
-            if (firstOtp) setTimeout(() => firstOtp.focus(), 100);
-        }
-
-        function moveOtpFocus(elem, index) {
-            const otps = document.querySelectorAll('.otp-input');
-            if (elem.value.length === 1 && index < 5) {
-                otps[index + 1].focus();
-            }
-        }
-
-        function resendOTP() {
-            showAlert("Code Resent", "A new 6-digit confirmation code has been dispatched to your email address.");
-        }
-
-        function verifyOTPAndFinish() {
-            const name = document.getElementById('reg-fullname').value || "User";
-            document.getElementById('res-acct-name').innerText = name;
-            document.getElementById('res-acct-type').innerText = selectedAccountType === 'personal' ? 'Personal Trader' : 'Merchant POS';
-
-            document.getElementById('reg-form-step-1').classList.add('hidden');
-            document.getElementById('reg-step-2').classList.add('hidden');
-            document.getElementById('reg-step-3').classList.remove('hidden');
-
-            document.getElementById('reg-step-label').innerText = "Section 3 of 3: Registration Complete";
-            document.getElementById('reg-step-percent').innerText = "100%";
-            document.getElementById('reg-progress-bar').className = "bg-gradient-to-r from-naija-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500 w-full";
-        }
 
         function showAlert(title, desc) {
             document.getElementById('modal-title').innerText = title;
@@ -350,7 +256,6 @@
         }
     </script>
     <script src="/static/register.js"></script>
-    <script src="/static/register2.js"></script>
-</body>
+    </body>
 </html>
 

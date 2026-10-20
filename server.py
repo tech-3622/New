@@ -371,8 +371,8 @@ def swap():
 
 init_db()
 
-import verify_routes
-verify_routes.setup(app, db_connect, user_json, Decimal("0.00"), Decimal("0.00"))
+import signup_routes
+signup_routes.setup(app, db_connect, user_json)
 
 import dash_routes
 dash_routes.setup(app, db_connect, user_json)
