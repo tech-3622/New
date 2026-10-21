@@ -389,5 +389,11 @@ admin_setup.setup(app, db_connect)
 import bank_routes
 bank_routes.setup(app, db_connect)
 
+import about_routes
+about_routes.setup(app)
+
+import news_routes
+news_routes.setup(app, db_connect)
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=False)

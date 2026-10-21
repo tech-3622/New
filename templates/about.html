@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - TCK Token</title>
+    <meta name="description" content="TCK Token is a Nigerian wallet where you hold naira, buy TCK, pay friends by username and vote on community proposals.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {
+                colors: {
+                    naija: { 50: '#eefbf3', 100: '#d7f5e3', 500: '#008751', 600: '#007043', 700: '#005835', 900: '#00331e' },
+                    gold: { 400: '#fbbf24', 500: '#f59e0b' },
+                    darkbg: '#0a0f0d', darkcard: '#121a16'
+                },
+                fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+            } }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0f0d; color: #f3f4f6; }
+        .glass-panel { background: rgba(18, 26, 22, 0.90); backdrop-filter: blur(20px); border: 1px solid rgba(0, 135, 81, 0.25); }
+        .gradient-text { background: linear-gradient(135deg, #008751 0%, #34d399 50%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] .chev { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col antialiased selection:bg-naija-500 selection:text-white">
+
+    <header class="w-full border-b border-naija-500/20 bg-darkcard/80 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                <svg class="w-8 h-8 sm:w-10 sm:h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="46" fill="#121a16" stroke="url(#naijaGrad)" stroke-width="6"/>
+                    <circle cx="50" cy="50" r="36" fill="#008751" fill-opacity="0.15"/>
+                    <path d="M30 35H70V45H55V75H45V45H30V35Z" fill="#008751"/>
+                    <path d="M62 48L72 58L62 68" stroke="#F59E0B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M38 52L28 62L38 72" stroke="#008751" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs><linearGradient id="naijaGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#008751"/><stop offset="0.5" stop-color="#34D399"/><stop offset="1" stop-color="#F59E0B"/></linearGradient></defs>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="text-lg sm:text-xl font-black tracking-tight text-white leading-none">TCK <span class="text-naija-500">Token</span></span>
+                    <span class="text-[9px] text-gray-400 font-medium tracking-widest uppercase mt-0.5">Nigerian Economic Catalyst</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-2">
+                {% if logged_in %}
+                <a href="/dashboard" class="bg-naija-500 hover:bg-naija-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">Dashboard</a>
+                {% else %}
+                <a href="/login" class="text-xs font-bold text-gray-300 hover:text-white px-3 py-2">Sign In</a>
+                <a href="/register" class="bg-naija-500 hover:bg-naija-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all">Create Account</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1">
+
+        <section style="background: radial-gradient(60% 55% at 50% 0%, rgba(0,135,81,0.28), transparent);">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-14 pb-12 sm:pt-20 sm:pb-16 text-center">
+                <span class="inline-flex items-center gap-2 bg-naija-500/15 text-naija-500 border border-naija-500/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    <i class="fa-solid fa-wallet"></i> Nigerian digital wallet
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-black text-white mt-5 leading-tight">
+                    Your money. Your community. <span class="gradient-text">One simple wallet.</span>
+                </h1>
+                <p class="text-sm sm:text-base text-gray-300 mt-4 max-w-2xl mx-auto leading-relaxed">
+                    TCK Token is a Nigerian wallet where you hold naira, buy TCK, pay friends by username and vote on how the community supports small businesses.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center mt-7">
+                    {% if logged_in %}
+                    <a href="/dashboard" class="bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg text-sm">Go to Dashboard</a>
+                    {% else %}
+                    <a href="/register" class="bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg text-sm">Create Account</a>
+                    <a href="/login" class="bg-darkcard hover:bg-gray-800 text-gray-200 font-bold px-8 py-3.5 rounded-xl border border-gray-800 text-sm">Sign In</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+            <h2 class="text-2xl sm:text-3xl font-black text-white text-center">How it works</h2>
+            <p class="text-xs sm:text-sm text-gray-400 text-center mt-2">Three simple steps.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-7">
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="w-10 h-10 rounded-xl bg-naija-500/20 text-naija-500 flex items-center justify-center font-black border border-naija-500/30">1</div>
+                    <h3 class="text-base font-bold text-white mt-4">Add naira</h3>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-2 leading-relaxed">Send a bank transfer to the account shown in the app, upload your payment screenshot and tap confirm. Your wallet is credited once a person has checked the payment.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="w-10 h-10 rounded-xl bg-naija-500/20 text-naija-500 flex items-center justify-center font-black border border-naija-500/30">2</div>
+                    <h3 class="text-base font-bold text-white mt-4">Buy TCK</h3>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-2 leading-relaxed">Swap naira for TCK at a fixed rate of ₦50 per TCK. Each swap has a 1% fee, and you see what you will receive before you confirm.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="w-10 h-10 rounded-xl bg-naija-500/20 text-naija-500 flex items-center justify-center font-black border border-naija-500/30">3</div>
+                    <h3 class="text-base font-bold text-white mt-4">Send, save or vote</h3>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-2 leading-relaxed">Pay friends by @username, lock TCK in a vault for rewards, or vote on community proposals.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+            <h2 class="text-2xl sm:text-3xl font-black text-white text-center">What makes it different</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-7">
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="text-xl text-naija-500"><i class="fa-solid fa-at"></i></div>
+                    <h3 class="text-sm font-bold text-white mt-3">Pay by @username</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">Send TCK to a friend with their username. No long wallet codes to copy, though you can use one if you want to.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="text-xl text-naija-500"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3 class="text-sm font-bold text-white mt-3">One rate, one fee</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">TCK costs ₦50 and a swap costs 1%. No hidden charges, and the amount is shown before you confirm.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="text-xl text-naija-500"><i class="fa-solid fa-user-check"></i></div>
+                    <h3 class="text-sm font-bold text-white mt-3">A person checks your money</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">Every deposit and withdrawal is reviewed by a person. Withdrawals need your 4-digit PIN and go only to the bank account saved on your profile.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="text-xl text-naija-500"><i class="fa-solid fa-people-group"></i></div>
+                    <h3 class="text-sm font-bold text-white mt-3">The community decides</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">Members vote Yes or No on community proposals. Every account gets one vote on each proposal.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="text-xl text-naija-500"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h3 class="text-sm font-bold text-white mt-3">Everything on record</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">Your history and notifications show deposits, withdrawals and payments as they happen.</p>
+                </div>
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="text-xl text-naija-500"><i class="fa-solid fa-lock"></i></div>
+                    <h3 class="text-sm font-bold text-white mt-3">Save for rewards</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">Lock TCK in a 30 or 90 day vault to earn rewards at the rates shown in the app. Leaving early costs a 2% fee.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 border-gold-500/30">
+                <span class="text-xs text-gold-400 font-bold uppercase tracking-wider">Community</span>
+                <h2 class="text-xl sm:text-2xl font-black text-white mt-1">Members have a say</h2>
+                <p class="text-xs sm:text-sm text-gray-300 mt-3 leading-relaxed">
+                    Part of what TCK is for is giving members a voice. Proposals, such as funding grants for local developers or small businesses, are put to a vote. Every account has one vote on each proposal, and the results are shown in the app.
+                </p>
+            </div>
+        </section>
+
+        <section class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+            <h2 class="text-2xl sm:text-3xl font-black text-white text-center">Safety and honesty</h2>
+            <p class="text-xs sm:text-sm text-gray-400 text-center mt-2">What we do, and what we don't promise.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-7">
+                <div class="glass-panel rounded-3xl p-6">
+                    <h3 class="text-sm font-bold text-emerald-400 mb-3">What we do</h3>
+                    <ul class="space-y-3 text-xs sm:text-sm text-gray-300">
+                        <li class="flex gap-3"><i class="fa-solid fa-check text-naija-500 mt-1"></i><span>Passwords and PINs are stored scrambled, never as plain text.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check text-naija-500 mt-1"></i><span>A person reviews every deposit and withdrawal.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check text-naija-500 mt-1"></i><span>Withdrawals need your PIN and go only to your saved bank account.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check text-naija-500 mt-1"></i><span>No fees on deposits, withdrawals or sending TCK to another member at the moment.</span></li>
+                    </ul>
+                </div>
+                <div class="glass-panel rounded-3xl p-6 border-gold-500/30">
+                    <h3 class="text-sm font-bold text-gold-400 mb-3">What we don't promise</h3>
+                    <ul class="space-y-3 text-xs sm:text-sm text-gray-300">
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-exclamation text-gold-400 mt-1"></i><span>We do not promise profit or returns. Rewards follow the rates shown in the app, and leaving a vault early costs a 2% fee.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-exclamation text-gold-400 mt-1"></i><span>TCK Token is not a bank.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-exclamation text-gold-400 mt-1"></i><span>Deposits and withdrawals are not instant, because a person checks them.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-exclamation text-gold-400 mt-1"></i><span>The rate of ₦50 per TCK is set by the platform. It is not a market price.</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-exclamation text-gold-400 mt-1"></i><span>We will never ask for your password or PIN. Never share them with anyone.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+            <h2 class="text-2xl sm:text-3xl font-black text-white text-center">Questions</h2>
+            <div class="space-y-3 mt-7">
+                <details class="glass-panel rounded-2xl p-4">
+                    <summary class="flex items-center justify-between gap-3 text-sm font-bold text-white">What is TCK?<span class="chev inline-block transition-transform text-naija-500"><i class="fa-solid fa-chevron-down"></i></span></summary>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-3 leading-relaxed">TCK is the balance you hold inside your TCK wallet. You buy it with naira in Swap at ₦50 per TCK, and you can sell it back the same way.</p>
+                </details>
+                <details class="glass-panel rounded-2xl p-4">
+                    <summary class="flex items-center justify-between gap-3 text-sm font-bold text-white">How do I add money?<span class="chev inline-block transition-transform text-naija-500"><i class="fa-solid fa-chevron-down"></i></span></summary>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-3 leading-relaxed">Open Bank Cash-In, send a transfer to the account shown, upload your payment screenshot and tap I Confirm Payment. You get a notification when it is approved.</p>
+                </details>
+                <details class="glass-panel rounded-2xl p-4">
+                    <summary class="flex items-center justify-between gap-3 text-sm font-bold text-white">How do I withdraw?<span class="chev inline-block transition-transform text-naija-500"><i class="fa-solid fa-chevron-down"></i></span></summary>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-3 leading-relaxed">Save your bank details on your Profile, open Bank Cash-In and choose Withdraw. The first time, you create a 4-digit PIN. The money is held while a person processes your request, and it goes back to your wallet if the request is declined.</p>
+                </details>
+                <details class="glass-panel rounded-2xl p-4">
+                    <summary class="flex items-center justify-between gap-3 text-sm font-bold text-white">Are there fees?<span class="chev inline-block transition-transform text-naija-500"><i class="fa-solid fa-chevron-down"></i></span></summary>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-3 leading-relaxed">A 1% fee applies when you swap. We do not charge for deposits, withdrawals or sending TCK to another member at the moment.</p>
+                </details>
+                <details class="glass-panel rounded-2xl p-4">
+                    <summary class="flex items-center justify-between gap-3 text-sm font-bold text-white">How do I keep my account safe?<span class="chev inline-block transition-transform text-naija-500"><i class="fa-solid fa-chevron-down"></i></span></summary>
+                    <p class="text-xs sm:text-sm text-gray-400 mt-3 leading-relaxed">Use a strong password, keep your PIN private, and never share either with anyone, including us.</p>
+                </details>
+            </div>
+        </section>
+
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 py-10 pb-16">
+            <div class="glass-panel rounded-3xl p-8 text-center">
+                <h2 class="text-xl sm:text-2xl font-black text-white">Ready to try it?</h2>
+                <p class="text-xs sm:text-sm text-gray-400 mt-2">Create your account in a few taps.</p>
+                <div class="mt-5">
+                    {% if logged_in %}
+                    <a href="/dashboard" class="inline-block bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg text-sm">Go to Dashboard</a>
+                    {% else %}
+                    <a href="/register" class="inline-block bg-gradient-to-r from-naija-500 to-emerald-600 hover:from-naija-600 hover:to-emerald-700 text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg text-sm">Create Account</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-5 text-center border-t border-gray-800 text-xs text-gray-500">
+        <a href="/login" class="hover:text-gray-300 underline">Sign In</a> &middot; &copy; 2026 TCK Token Economy. All rights reserved.
+    </footer>
+
+</body>
+</html>
